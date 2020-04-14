@@ -191,6 +191,4 @@ const toReturn = {
 
 covid19ImpactEstimator(toReturn);
 
-console.log(toReturn);
-
-// export default covid19ImpactEstimator;
+export default covid19ImpactEstimator;
