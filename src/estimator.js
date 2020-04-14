@@ -134,8 +134,9 @@ function globalDollarsInFlight(
   return infectionsByReqTime * avgPop * avgIncome * requestedTime;
 }
 
-function impact(data) {
-  const factor = 10;
+function impactOrSevereImpact(type, factor, data) {
+  if (type === 'impact') this.factor = factor;
+  if (type === 's_impact') this.factor = factor;
   const processTimeToElapse = globalProcessTimeToElapse(
     data.periodType,
     parseInt(data.timeToElapse, 10)
@@ -182,59 +183,10 @@ function impact(data) {
   };
 }
 
-const severeImpact = (data) => {
-  const factor = 50;
-  const processTimeToElapse = globalProcessTimeToElapse(
-    data.periodType,
-    parseInt(data.timeToElapse, 10)
-  );
-  const currentlyInfected = globalCurrentlyInfected(
-    parseInt(data.reportedCases, 10),
-    factor
-  );
-  const factorByRequestedTime = globalFactorByRequestedTime(
-    parseInt(data.timeToElapse, 10)
-  );
-  const infectionsByRequestedTime = globalInfectionsByRequestedTime(
-    currentlyInfected,
-    factorByRequestedTime
-  );
-  const severeCasesByRequestedTime = globalSevereCasesByRequestedTime(
-    15,
-    infectionsByRequestedTime
-  );
-  const hospitalBedsByRequestedTime = globalHospitalBedsByRequestedTime(
-    data.totalHospitalBeds,
-    severeCasesByRequestedTime
-  );
-  const casesForICUByRequestedTime = globalCasesForICUByRequestedTime(
-    infectionsByRequestedTime
-  );
-  const casesForVentilatorsByRequestedTime = globalCasesForVentilatorsByRequestedTime(
-    infectionsByRequestedTime
-  );
-  const dollarsInFlight = globalDollarsInFlight(
-    infectionsByRequestedTime,
-    processTimeToElapse,
-    data.region.avgDailyIncomeInUSD,
-    data.region.avgDailyIncomePopulation
-  );
-
-  return {
-    currentlyInfected,
-    infectionsByRequestedTime,
-    severeCasesByRequestedTime,
-    hospitalBedsByRequestedTime,
-    casesForICUByRequestedTime,
-    casesForVentilatorsByRequestedTime,
-    dollarsInFlight
-  };
-};
-
 const toReturn = {
   data: test,
-  impact: impact(test),
-  severeImpact: severeImpact(test)
+  impact: impactOrSevereImpact('impact', 10, test),
+  severeImpact: impactOrSevereImpact('s_impact', 50, test)
 };
 
 covid19ImpactEstimator(toReturn);
