@@ -129,7 +129,7 @@ function globalDollarsInFlight(
   avgIncome,
   avgPop
 ) {
-  return infectionsByReqTime * avgPop * avgIncome * requestedTime;
+  return Math.trunc((infectionsByReqTime * avgPop * avgIncome) / requestedTime);
 }
 
 class Estimator {
