@@ -1,5 +1,3 @@
-const covid19ImpactEstimator = (data) => data;
-
 const test = {
   region: {
     name: 'Africa',
@@ -134,61 +132,66 @@ function globalDollarsInFlight(
   return infectionsByReqTime * avgPop * avgIncome * requestedTime;
 }
 
-function impactOrSevereImpact(type, factor, data) {
-  if (type === 'impact') this.factor = factor;
-  if (type === 's_impact') this.factor = factor;
-  const processTimeToElapse = globalProcessTimeToElapse(
-    data.periodType,
-    parseInt(data.timeToElapse, 10)
-  );
-  const currentlyInfected = globalCurrentlyInfected(
-    parseInt(data.reportedCases, 10),
-    factor
-  );
-  const factorByRequestedTime = globalFactorByRequestedTime(
-    parseInt(data.timeToElapse, 10)
-  );
-  const infectionsByRequestedTime = globalInfectionsByRequestedTime(
-    currentlyInfected,
-    factorByRequestedTime
-  );
-  const severeCasesByRequestedTime = globalSevereCasesByRequestedTime(
-    15,
-    infectionsByRequestedTime
-  );
-  const hospitalBedsByRequestedTime = globalHospitalBedsByRequestedTime(
-    data.totalHospitalBeds,
-    severeCasesByRequestedTime
-  );
-  const casesForICUByRequestedTime = globalCasesForICUByRequestedTime(
-    infectionsByRequestedTime
-  );
-  const casesForVentilatorsByRequestedTime = globalCasesForVentilatorsByRequestedTime(
-    infectionsByRequestedTime
-  );
-  const dollarsInFlight = globalDollarsInFlight(
-    infectionsByRequestedTime,
-    processTimeToElapse,
-    data.region.avgDailyIncomeInUSD,
-    data.region.avgDailyIncomePopulation
-  );
-  return {
-    currentlyInfected,
-    infectionsByRequestedTime,
-    severeCasesByRequestedTime,
-    hospitalBedsByRequestedTime,
-    casesForICUByRequestedTime,
-    casesForVentilatorsByRequestedTime,
-    dollarsInFlight
-  };
+class Estimator {
+  constructor(type, factor, data) {
+    if (type === 'impact') this.factor = factor;
+    if (type === 's_impact') this.factor = factor;
+    const processTimeToElapse = globalProcessTimeToElapse(
+      data.periodType,
+      parseInt(data.timeToElapse, 10)
+    );
+    const currentlyInfected = globalCurrentlyInfected(
+      parseInt(data.reportedCases, 10),
+      factor
+    );
+    const factorByRequestedTime = globalFactorByRequestedTime(
+      parseInt(data.timeToElapse, 10)
+    );
+    const infectionsByRequestedTime = globalInfectionsByRequestedTime(
+      currentlyInfected,
+      factorByRequestedTime
+    );
+    const severeCasesByRequestedTime = globalSevereCasesByRequestedTime(
+      15,
+      infectionsByRequestedTime
+    );
+    const hospitalBedsByRequestedTime = globalHospitalBedsByRequestedTime(
+      data.totalHospitalBeds,
+      severeCasesByRequestedTime
+    );
+    const casesForICUByRequestedTime = globalCasesForICUByRequestedTime(
+      infectionsByRequestedTime
+    );
+    const casesForVentilatorsByRequestedTime = globalCasesForVentilatorsByRequestedTime(
+      infectionsByRequestedTime
+    );
+    const dollarsInFlight = globalDollarsInFlight(
+      infectionsByRequestedTime,
+      processTimeToElapse,
+      data.region.avgDailyIncomeInUSD,
+      data.region.avgDailyIncomePopulation
+    );
+    return {
+      currentlyInfected,
+      infectionsByRequestedTime,
+      severeCasesByRequestedTime,
+      hospitalBedsByRequestedTime,
+      casesForICUByRequestedTime,
+      casesForVentilatorsByRequestedTime,
+      dollarsInFlight
+    };
+  }
 }
 
-const toReturn = {
-  data: test,
-  impact: impactOrSevereImpact('impact', 10, test),
-  severeImpact: impactOrSevereImpact('s_impact', 50, test)
+const covid19ImpactEstimator = (data) => {
+  const toReturn = {
+    data,
+    impact: new Estimator('impact', 10, data),
+    severeImpact: new Estimator('s_impact', 50, data)
+  };
+  return toReturn;
 };
 
-covid19ImpactEstimator(toReturn);
+console.log(covid19ImpactEstimator(test));
 
 export default covid19ImpactEstimator;

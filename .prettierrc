@@ -1,4 +1,5 @@
 {
+  "source.fixAll.eslint": true,
   "tabWidth": 2,
   "trailingComma": "none",
   "singleQuote": true
