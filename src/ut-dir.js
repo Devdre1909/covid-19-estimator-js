@@ -145,7 +145,7 @@ class Estimator {
       factor
     );
     const factorByRequestedTime = globalFactorByRequestedTime(
-      parseInt(data.timeToElapse, 10)
+      parseInt(processTimeToElapse, 10)
     );
     const infectionsByRequestedTime = globalInfectionsByRequestedTime(
       currentlyInfected,
