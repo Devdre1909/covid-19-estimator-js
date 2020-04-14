@@ -32,7 +32,7 @@ module.exports = () => {
 
     const logStream = fs.createWriteStream(path.join(__dirname, './log.txt'));
     server.use(
-      morgan(`${Date.now()}\t\t:url\t\tdone in :response-time ms\n`, {
+      morgan(`${Date.now()}\t\t:url\t\tdone in :response-time ms`, {
         stream: logStream
       })
     );

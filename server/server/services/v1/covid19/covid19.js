@@ -1,7 +1,8 @@
 const httpStatusCodes = require('http-status-codes');
 const xmljsConvert = require('xml-js');
 const path = require('path');
-const covid19ImpactEstimator = require('../../../../../src/estimator');
+const fs = require('fs');
+const covid19ImpactEstimator = require('../../../../../src/ut-dir');
 
 const returnJson = async (req, res) => {
   if (!req.body) {
@@ -109,7 +110,7 @@ const returnLog = (req, res) => {
   res.setHeader('content-type', 'data/text');
   return res
     .status(httpStatusCodes.OK)
-    .send(path.join(__dirname, '../../../log.txt'));
+    .send(fs.readFileSync(path.join(__dirname, '../../../log.txt')));
 };
 
 module.exports = {
