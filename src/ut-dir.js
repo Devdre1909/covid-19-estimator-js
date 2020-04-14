@@ -44,7 +44,7 @@ function globalProcessTimeToElapse(periodType, timeToElapse) {
  */
 
 function globalFactorByRequestedTime(timeToElapse) {
-  return Math.floor(parseInt(timeToElapse, 10) / 3);
+  return Math.trunc(parseInt(timeToElapse, 10) / 3);
 }
 /**
  *Get currently Infected cases
@@ -81,7 +81,7 @@ cases that will require hospitalization to recover.
  */
 
 function globalSevereCasesByRequestedTime(percent, infectionsByReqTime) {
-  return Math.floor((percent / 100) * infectionsByReqTime);
+  return Math.trunc((percent / 100) * infectionsByReqTime);
 }
 /**
 *estimate the number of available hospital beds for severe COVID-19 positive patients. E.g 23
@@ -98,7 +98,7 @@ function globalHospitalBedsByRequestedTime(
   severeCasesByReqTime
 ) {
   // Assuming only 35% of beds will be available
-  return Math.floor((35 / 100) * totalHospitalBeds - severeCasesByReqTime);
+  return Math.trunc((35 / 100) * totalHospitalBeds - severeCasesByReqTime);
 }
 /**
  *5% of infectionsByRequestedTime . This is the estimated number of severe positive cases
@@ -109,7 +109,7 @@ that will require ICU care.
  */
 
 function globalCasesForICUByRequestedTime(infectionsByReqTime) {
-  return Math.floor((5 / 100) * infectionsByReqTime);
+  return Math.trunc((5 / 100) * infectionsByReqTime);
 }
 /**
  *2% of infectionsByRequestedTime . This is the estimated number of severe positive
@@ -120,7 +120,7 @@ cases that will require ventilators
  */
 
 function globalCasesForVentilatorsByRequestedTime(infectionsByReqTime) {
-  return Math.floor((2 / 100) * infectionsByReqTime);
+  return Math.trunc((2 / 100) * infectionsByReqTime);
 }
 
 function globalDollarsInFlight(

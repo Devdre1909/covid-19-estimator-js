@@ -44,7 +44,7 @@ function globalProcessTimeToElapse(periodType, timeToElapse) {
  * @returns {Number}
  */
 function globalFactorByRequestedTime(timeToElapse) {
-  return Math.floor(parseInt(timeToElapse, 10) / 3);
+  return Math.trunc(parseInt(timeToElapse, 10) / 3);
 }
 
 /**
@@ -81,7 +81,7 @@ cases that will require hospitalization to recover.
  * @returns
  */
 function globalSevereCasesByRequestedTime(percent, infectionsByReqTime) {
-  return Math.floor((percent / 100) * infectionsByReqTime);
+  return Math.trunc((percent / 100) * infectionsByReqTime);
 }
 
 /**
@@ -98,7 +98,7 @@ function globalHospitalBedsByRequestedTime(
   severeCasesByReqTime
 ) {
   // Assuming only 35% of beds will be available
-  return Math.floor((35 / 100) * totalHospitalBeds - severeCasesByReqTime);
+  return Math.trunc((35 / 100) * totalHospitalBeds - severeCasesByReqTime);
 }
 
 /**
@@ -109,7 +109,7 @@ that will require ICU care.
  * @returns
  */
 function globalCasesForICUByRequestedTime(infectionsByReqTime) {
-  return Math.floor((5 / 100) * infectionsByReqTime);
+  return Math.trunc((5 / 100) * infectionsByReqTime);
 }
 
 /**
@@ -120,7 +120,7 @@ cases that will require ventilators
  * @returns
  */
 function globalCasesForVentilatorsByRequestedTime(infectionsByReqTime) {
-  return Math.floor((2 / 100) * infectionsByReqTime);
+  return Math.trunc((2 / 100) * infectionsByReqTime);
 }
 
 function globalDollarsInFlight(
